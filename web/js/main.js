@@ -33,7 +33,9 @@ sfAssetsLibrary_Engine.prototype = {
 				(function () {
 					// :TODO: use json instead of eval (@link http://json.org/)
 					var rel = ("undefined" !== typeof JSON) ? JSON.parse(asset_input[i].getAttribute('rel')) : eval("(" + asset_input[i].getAttribute('rel') + ")"),
-						fname = asset_input[i].previousSibling.form.name;
+						fname = asset_input[i].previousSibling.form.name,
+						img_small = asset_input[i].nextSibling.nextSibling,
+						rm_asset_button = asset_input[i].nextSibling.nextSibling.nextSibling;
 
 					sfAssetsLibrary.addEvent(asset_input[i], 'click', function (e) {
 						sfAssetsLibrary.openWindow({
@@ -47,7 +49,17 @@ sfAssetsLibrary_Engine.prototype = {
 						sfAssetsLibrary.prevDef(e);
 						sfAssetsLibrary.stopProp(e);
 					}, false);
+					
+					sfAssetsLibrary.addEvent(rm_asset_button, "click", function (event) {
+						var frm = (fname == '') ? 0 : fname;
 
+						document.forms[frm].elements[rel.name].setAttribute("value", "");
+						// :TODO: set path from helper?
+						img_small.setAttribute("src", "/sfDoctrineAssetsLibraryPlugin/images/unknown.png");
+						
+						sfAssetsLibrary.prevDef(event);
+						sfAssetsLibrary.stopProp(event);
+					}, false);
 				})();
 			}
 		}

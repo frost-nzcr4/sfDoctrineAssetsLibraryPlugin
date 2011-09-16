@@ -351,6 +351,10 @@
         <source>Insert Image</source>
         <target>Вставить изображение</target>
       </trans-unit>
+      <trans-unit>
+        <source>Remove Image</source>
+        <target>Удалить</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

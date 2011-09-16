@@ -616,3 +616,5 @@ ul.sf_admin_actions li.sf_admin_action_list
   display: inline;
   float: none;
 }
+
+.sf_asset_remove { margin: 0px 0px 0px 10px; }

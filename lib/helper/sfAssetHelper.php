@@ -204,5 +204,6 @@ function input_sf_asset_image_tag($name, $value = null, $options = array())
 
   return '<a id="sf_asset_input_image" class="sf_asset_input_image" href="#" rel=\'{"url": "' . $url . '", "name": "' . $name . '", "type": "' . $options['type'] . '"}\'>' .
     image_tag('/sfDoctrineAssetsLibraryPlugin/images/folder_open', array('alt' => 'Insert Image', 'title' => __('Insert Image', null, 'sfAsset'))) . '</a> ' .
-    asset_image_tag($asset, 'small', array('id' => $options['id'] . '_img'));
+    asset_image_tag($asset, 'small', array('id' => $options['id'] . '_img')) .
+    '<input class="sf_asset_remove" type="button" value="' . __('Remove Image', null, 'sfAsset') . '"/>';
 }
