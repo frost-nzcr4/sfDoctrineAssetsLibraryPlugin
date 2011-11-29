@@ -376,10 +376,13 @@ class sfAssetsLibraryTools
    */
   public static function createPdfThumbnail($source, $dest, $width, $height, $quality, $shave_all = false)
   {
-    if (class_exists('sfThumbnail') && sfConfig::get('app_sfAssetsLibrary_use_ImageMagick', false) && file_exists($source))
-    {
+    if (!class_exists('sfThumbnail') || !sfConfig::get('app_sfAssetsLibrary_use_ImageMagick', false) || !file_exists($source)) {
+      return false;
+    }
+
       $adapter = 'sfImageMagickAdapter';
-      $mime = 'image/jpg';
+      $mime    = 'image/jpg';
+
       if ($shave_all)
       {
         $thumbnail = new sfThumbnail($width, $height, false, false, $quality, $adapter, array(
@@ -393,13 +396,11 @@ class sfAssetsLibraryTools
         $newHeight = $width > 0 && $w > 0 ? ceil(($width * $h) / $w) : $height;
         $thumbnail = new sfThumbnail($width, $newHeight, true, false, $quality, $adapter, array('extract' => 0));
       }
+
       $thumbnail->loadFile($source);
       $thumbnail->save($dest, $mime, true);
 
         return true;
-    }
-
-    return false;
   }
 
   public static function getPdfSize($file)
