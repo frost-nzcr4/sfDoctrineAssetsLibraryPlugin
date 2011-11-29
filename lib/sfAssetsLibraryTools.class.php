@@ -380,27 +380,27 @@ class sfAssetsLibraryTools
       return false;
     }
 
-      $adapter = 'sfImageMagickAdapter';
-      $mime    = 'image/jpg';
+    $adapter = 'sfImageMagickAdapter';
+    $mime    = 'image/jpg';
 
-      if ($shave_all)
-      {
-        $thumbnail = new sfThumbnail($width, $height, false, false, $quality, $adapter, array(
-          'method'  => 'shave_all',
-          'extract' => 0,
-        ));
-      }
-      else
-      {
-        list($w, $h) = self::getPdfSize($source);
-        $newHeight = $width > 0 && $w > 0 ? ceil(($width * $h) / $w) : $height;
-        $thumbnail = new sfThumbnail($width, $newHeight, true, false, $quality, $adapter, array('extract' => 0));
-      }
+    if ($shave_all)
+    {
+      $thumbnail = new sfThumbnail($width, $height, false, false, $quality, $adapter, array(
+        'method'  => 'shave_all',
+        'extract' => 0,
+      ));
+    }
+    else
+    {
+      list($w, $h) = self::getPdfSize($source);
+      $newHeight = $width > 0 && $w > 0 ? ceil(($width * $h) / $w) : $height;
+      $thumbnail = new sfThumbnail($width, $newHeight, true, false, $quality, $adapter, array('extract' => 0));
+    }
 
-      $thumbnail->loadFile($source);
-      $thumbnail->save($dest, $mime, true);
+    $thumbnail->loadFile($source);
+    $thumbnail->save($dest, $mime, true);
 
-        return true;
+    return true;
   }
 
   public static function getPdfSize($file)
