@@ -207,7 +207,7 @@ sfAssetsLibrary_Engine.prototype = {
     window.eventReturnValue = false;
   }
 
-}
+};
 
 var sfAssetsLibrary = new sfAssetsLibrary_Engine();
 

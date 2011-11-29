@@ -93,6 +93,6 @@ sfAssetUtil = {
     window.eventReturnValue = false;
   }
 
-}
+};
 
 window.onload = sfAssetUtil.load;
