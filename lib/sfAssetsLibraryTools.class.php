@@ -225,7 +225,7 @@ class sfAssetsLibraryTools
 //  {
 //
 //    $url = str_replace(sfConfig::get('app_sfAssetsLibrary_upload_dir', 'media'), '', $url);
-//    
+//
 //    $url = rtrim($url, '/');
 //    $parts = explode('/', $url);
 //    $filename = array_pop($parts);
@@ -329,8 +329,10 @@ class sfAssetsLibraryTools
    */
   public static function createThumbnail($source, $dest, $width, $height, $shave_all = false)
   {
-    if (class_exists('sfThumbnail') && file_exists($source))
-    {
+    if (!class_exists('sfThumbnail') || !file_exists($source)) {
+      return false;
+    }
+
       if (sfConfig::get('app_sfAssetsLibrary_use_ImageMagick', false))
       {
         $adapter = 'sfImageMagickAdapter';
@@ -355,9 +357,6 @@ class sfAssetsLibraryTools
         $thumbnail->save($dest, $mime);
 
         return true;
-      }
-
-    return false;
   }
 
   /**
