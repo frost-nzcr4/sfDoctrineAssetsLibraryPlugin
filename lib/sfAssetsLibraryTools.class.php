@@ -333,30 +333,32 @@ class sfAssetsLibraryTools
       return false;
     }
 
-      if (sfConfig::get('app_sfAssetsLibrary_use_ImageMagick', false))
-      {
-        $adapter = 'sfImageMagickAdapter';
-        $mime = 'image/jpg';
-      }
-      else
-      {
-        $adapter = 'sfGDAdapter';
-        $mime = 'image/jpeg';
-      }
-      if ($shave_all)
-      {
-        $thumbnail  = new sfThumbnail($width, $height, false, true, 85, $adapter, array('method' => 'shave_all'));
-      }
-      else
-      {
-        list($w, $h, $type, $attr) = getimagesize($source);
-        $newHeight = $width > 0 && $w > 0 ? ceil(($width * $h) / $w) : $height;
-        $thumbnail = new sfThumbnail($width, $newHeight, true, true, 85, $adapter);
-      }
-        $thumbnail->loadFile($source);
-        $thumbnail->save($dest, $mime);
+    if (sfConfig::get('app_sfAssetsLibrary_use_ImageMagick', false))
+    {
+      $adapter = 'sfImageMagickAdapter';
+      $mime = 'image/jpg';
+    }
+    else
+    {
+      $adapter = 'sfGDAdapter';
+      $mime = 'image/jpeg';
+    }
 
-        return true;
+    if ($shave_all)
+    {
+      $thumbnail  = new sfThumbnail($width, $height, false, true, 85, $adapter, array('method' => 'shave_all'));
+    }
+    else
+    {
+      list($w, $h, $type, $attr) = getimagesize($source);
+      $newHeight = $width > 0 && $w > 0 ? ceil(($width * $h) / $w) : $height;
+      $thumbnail = new sfThumbnail($width, $newHeight, true, true, 85, $adapter);
+    }
+
+    $thumbnail->loadFile($source);
+    $thumbnail->save($dest, $mime);
+
+    return true;
   }
 
   /**
