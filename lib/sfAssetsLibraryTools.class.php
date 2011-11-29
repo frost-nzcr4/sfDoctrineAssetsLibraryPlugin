@@ -299,21 +299,23 @@ class sfAssetsLibraryTools
   {
     $source = self::getThumbnailPath($folder, $filename, 'full');
     $thumbnailSettings = sfConfig::get('app_sfAssetsLibrary_thumbnails', array(
-      'small' => array('width' => 84, 'height' => 84, 'shave' => true),
-      'large' => array('width' => 194, 'height' => 152)
+      'small' => array('width' => 84, 'height' => 84, 'quality' => 85, 'shave' => true),
+      'large' => array('width' => 194, 'height' => 152, 'quality' => 85)
     ));
     foreach ($thumbnailSettings as $key => $params)
     {
-      $width  = $params['width'];
-      $height = $params['height'];
-      $shave  = isset($params['shave']) ? $params['shave'] : false;
+      $width   = $params['width'];
+      $height  = $params['height'];
+      $quality = $params['quality'];
+      $shave   = isset($params['shave']) ? $params['shave'] : false;
+
       if ($pdf)
       {
-        self::createPdfThumbnail($source, self::getThumbnailPath($folder, $filename, $key), $width, $height, $shave);
+        self::createPdfThumbnail($source, self::getThumbnailPath($folder, $filename, $key), $width, $height, $quality, $shave);
       }
       else
       {
-      self::createThumbnail($source, self::getThumbnailPath($folder, $filename, $key), $width, $height, $shave);
+      self::createThumbnail($source, self::getThumbnailPath($folder, $filename, $key), $width, $height, $quality, $shave);
       }
     }
   }
@@ -324,10 +326,11 @@ class sfAssetsLibraryTools
    * @param  string  $dest
    * @param  integer $width
    * @param  integer $height
-   * @param  boolean $shave_all Recommanded when  "image source HEIGHT" < "image source WIDTH"
+   * @param  integer $quality   JPEG quality (0-100)
+   * @param  boolean $shave_all Recommanded when "image source HEIGHT" < "image source WIDTH"
    * @return boolean
    */
-  public static function createThumbnail($source, $dest, $width, $height, $shave_all = false)
+  public static function createThumbnail($source, $dest, $width, $height, $quality, $shave_all = false)
   {
     if (!class_exists('sfThumbnail') || !file_exists($source)) {
       return false;
@@ -346,13 +349,13 @@ class sfAssetsLibraryTools
 
     if ($shave_all)
     {
-      $thumbnail  = new sfThumbnail($width, $height, false, true, 85, $adapter, array('method' => 'shave_all'));
+      $thumbnail  = new sfThumbnail($width, $height, false, true, $quality, $adapter, array('method' => 'shave_all'));
     }
     else
     {
       list($w, $h, $type, $attr) = getimagesize($source);
       $newHeight = $width > 0 && $w > 0 ? ceil(($width * $h) / $w) : $height;
-      $thumbnail = new sfThumbnail($width, $newHeight, true, true, 85, $adapter);
+      $thumbnail = new sfThumbnail($width, $newHeight, true, true, $quality, $adapter);
     }
 
     $thumbnail->loadFile($source);
@@ -367,10 +370,11 @@ class sfAssetsLibraryTools
    * @param  string  $dest
    * @param  integer $width
    * @param  integer $height
-   * @param  boolean $shave_all Recommanded when  "image source HEIGHT" < "image source WIDTH"
+   * @param  integer $quality   JPEG quality (0-100)
+   * @param  boolean $shave_all Recommanded when "image source HEIGHT" < "image source WIDTH"
    * @return boolean
    */
-  public static function createPdfThumbnail($source, $dest, $width, $height, $shave_all = false)
+  public static function createPdfThumbnail($source, $dest, $width, $height, $quality, $shave_all = false)
   {
     if (class_exists('sfThumbnail') && sfConfig::get('app_sfAssetsLibrary_use_ImageMagick', false) && file_exists($source))
     {
@@ -378,7 +382,7 @@ class sfAssetsLibraryTools
       $mime = 'image/jpg';
       if ($shave_all)
       {
-        $thumbnail = new sfThumbnail($width, $height, false, false, 85, $adapter, array(
+        $thumbnail = new sfThumbnail($width, $height, false, false, $quality, $adapter, array(
           'method'  => 'shave_all',
           'extract' => 0,
         ));
@@ -387,7 +391,7 @@ class sfAssetsLibraryTools
       {
         list($w, $h) = self::getPdfSize($source);
         $newHeight = $width > 0 && $w > 0 ? ceil(($width * $h) / $w) : $height;
-        $thumbnail = new sfThumbnail($width, $newHeight, true, false, 85, $adapter, array('extract' => 0));
+        $thumbnail = new sfThumbnail($width, $newHeight, true, false, $quality, $adapter, array('extract' => 0));
       }
       $thumbnail->loadFile($source);
       $thumbnail->save($dest, $mime, true);

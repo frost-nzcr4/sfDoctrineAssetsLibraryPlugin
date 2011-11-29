@@ -137,10 +137,12 @@ of the settings you can change in your application's `app.yml`:
           small:                             # Displayed in the list page
             width: 84
             height: 84
+            quality: 70
             shave: true                      # Cut strips to constraint the image size
           large:                             # Displayed in the details page
             width: 194
             height: 152
+            quality: 85
         search_pager_size: 20                # Number of resuts per page
         mass_upload_size:  5                 # Number of file upload controls displayed in the mass upload form
 
