@@ -336,15 +336,12 @@ class sfAssetsLibraryTools
       return false;
     }
 
+    $adapter = 'sfGDAdapter';
+    $mime    = 'image/jpeg';
+
     if (sfConfig::get('app_sfAssetsLibrary_use_ImageMagick', false))
     {
       $adapter = 'sfImageMagickAdapter';
-      $mime = 'image/jpg';
-    }
-    else
-    {
-      $adapter = 'sfGDAdapter';
-      $mime = 'image/jpeg';
     }
 
     if ($shave_all)
