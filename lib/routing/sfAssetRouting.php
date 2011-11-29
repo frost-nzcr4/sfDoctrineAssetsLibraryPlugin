@@ -32,6 +32,7 @@ class sfAssetRouting
       'mass_upload'   => 'massUpload',
       'create_folder' => 'createFolder',
       'add_quick'     => 'addQuick',
+      'recreate'      => 'recreate',
       'rename_asset'  => 'renameAsset',
       'replace_asset' => 'replaceAsset',
       'move_asset'    => 'moveAsset',

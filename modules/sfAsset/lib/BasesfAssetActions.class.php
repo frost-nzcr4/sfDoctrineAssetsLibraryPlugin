@@ -2,7 +2,7 @@
 
 /**
  * Base actions for the sfDoctrineAssetsLibraryPlugin sfAsset module.
- * 
+ *
  * @package     sfDoctrineAssetsLibraryPlugin
  * @subpackage  sfAsset
  * @author      Your name here
@@ -19,7 +19,7 @@ abstract class BasesfAssetActions extends sfActions
     $this->getUser()->getAttributeHolder()->remove('popup', null, 'sf_admin/sf_asset/navigation');
     $this->redirect('@sf_asset_library_list');
   }
-  
+
   /**
    * list folders and assets
    * @param sfWebRequest $request
@@ -57,7 +57,7 @@ abstract class BasesfAssetActions extends sfActions
 
     $this->removeLayoutIfPopup($request);
   }
-  
+
   protected function getChildren($folder) {
     $children = $folder->getNode()->getChildren();
     if ($children === false) {
@@ -101,7 +101,7 @@ abstract class BasesfAssetActions extends sfActions
 
     $this->removeLayoutIfPopup($request);
   }
-  
+
   /**
    * create folder
    * @param sfWebRequest $request
@@ -114,7 +114,7 @@ abstract class BasesfAssetActions extends sfActions
       $this->redirectToPath('@sf_asset_library_dir?dir=' . $this->form->getObject()->getRelativePath());
     }
   }
-  
+
   /**
    * move folder
    * @param sfWebRequest $request
@@ -145,7 +145,7 @@ abstract class BasesfAssetActions extends sfActions
       return $this->redirectToPath('@sf_asset_library_dir?dir=' . $folder->getRelativePath());
     }
   }
-  
+
   /**
    * rename folder
    * @param sfWebRequest $request
@@ -175,7 +175,7 @@ abstract class BasesfAssetActions extends sfActions
       return $this->redirectToPath('@sf_asset_library_dir?dir=' . $folder->getRelativePath());
     }
   }
-  
+
   /**
    * delete folder
    * @param sfWebRequest $request
@@ -199,7 +199,7 @@ abstract class BasesfAssetActions extends sfActions
 
     return $this->redirectToPath('@sf_asset_library_dir?dir=' . $folder->getParentPath());
   }
-  
+
   /**
    * upload asset
    * @param sfWebRequest $request
@@ -246,7 +246,7 @@ abstract class BasesfAssetActions extends sfActions
     }
     $this->redirect('@sf_asset_library_edit?id=' . $asset->getId());
   }
-  
+
   /**
    * upload many assets
    * @param sfWebRequest $request
@@ -287,7 +287,7 @@ abstract class BasesfAssetActions extends sfActions
       }
     }
   }
-  
+
   /**
    * delete asset
    * @param sfWebRequest $request
@@ -311,7 +311,7 @@ abstract class BasesfAssetActions extends sfActions
 
     return $this->redirectToPath('@sf_asset_library_dir?dir=' . $asset->getFolderPath());
   }
-  
+
   /**
    * create new asset
    * @param sfWebRequest $request
@@ -320,7 +320,7 @@ abstract class BasesfAssetActions extends sfActions
   {
     return $this->forward('sfAsset', 'edit');
   }
-  
+
   /**
    * edit asset
    * @param sfWebRequest $request
@@ -334,7 +334,7 @@ abstract class BasesfAssetActions extends sfActions
     $this->moveform = new sfAssetMoveForm($this->sfAsset);
     $this->replaceform = new sfAssetReplaceForm($this->sfAsset);
   }
-  
+
   /**
    * update asset
    * @param sfWebRequest $request
@@ -397,7 +397,26 @@ abstract class BasesfAssetActions extends sfActions
 
     return $this->redirect('@sf_asset_library_edit?id=' . $asset->getId());
   }
-  
+
+  /**
+   * Recreate assets.
+   * @param sfWebRequest $request
+   */
+  public function executeRecreate(sfWebRequest $request)
+  {
+    $assets = sfAssetTable::getInstance()->findAll();
+    $this->forward404Unless($assets, 'There is no assets to recreate');
+/*
+    $c = count($assets);
+    for ($i = 0; $i < $c; $i++) {
+      $asset = $assets[$i];
+      $asset->create($asset->getName(), false, false);
+      $this->getUser()->setFlash('notice', 'Assets has been recreated');
+
+    return $this->redirect('@sf_asset_library_edit?id=' . $asset->getId());
+*/
+  }
+
   /**
    * rename asset
    * @param sfWebRequest $request
@@ -432,7 +451,7 @@ abstract class BasesfAssetActions extends sfActions
 
     return $this->redirect('@sf_asset_library_edit?id=' . $asset->getId());
   }
-  
+
   /**
    * replace asset
    * @param sfWebRequest $request
@@ -457,7 +476,7 @@ abstract class BasesfAssetActions extends sfActions
 
     return $this->redirect('@sf_asset_library_edit?id=' . $asset->getId());
   }
-  
+
   /**
    * @param string  $path
    * @param integer $string
@@ -515,5 +534,5 @@ abstract class BasesfAssetActions extends sfActions
       $this->popup = false;
     }
   }
-  
+
 }
