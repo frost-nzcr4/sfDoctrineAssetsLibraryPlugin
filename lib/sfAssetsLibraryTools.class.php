@@ -288,9 +288,9 @@ class sfAssetsLibraryTools
    * Create the thumbnails for image assets
    * The numbe and size of thumbnails can be configured in the app.yml
    * The configuration accepts various formats:
-   *   small: { width: 80, height: 80, shave: true }  // 80x80 shaved
-   *   small: [80, 80, true]                          // 80x80 shaved
-   *   small: [80]                                    // 80x80 not shaved
+   *   small: { width: 80, height: 80, quality: 85, shave: true }  // 80x80, q=85, shaved
+   *   small: [80, 80, 85, true]                                   // 80x80, q=85, shaved
+   *   small: [80]                                                 // 80x80, q=85, not shaved
    * @param string $folder
    * @param string $filename
    * @param boolean $pdf
